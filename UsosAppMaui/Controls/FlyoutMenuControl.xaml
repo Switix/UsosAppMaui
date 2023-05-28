@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<FlyoutItem
+    x:Class="UsosAppMaui.Controls.FlyoutMenuControl"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:page="clr-namespace:UsosAppMaui.Pages"
+    FlyoutDisplayOptions="AsMultipleItems">
+
+    <ShellContent
+        Title="Oceny"
+        ContentTemplate="{DataTemplate page:GradesPage}"
+        Route="GradesPage" />
+    <ShellContent
+        Title="Plan zajęć"
+        ContentTemplate="{DataTemplate page:SchedulePage}"
+        Route="SchedulePage" />
+
+    <ShellContent
+        Title="Grupy zajęciowe"
+        ContentTemplate="{DataTemplate page:GroupsPage}"
+        Route="GroupsPage" />
+    <ShellContent
+        Title="UKW poczta"
+        ContentTemplate="{DataTemplate page:MailPage}"
+        Route="MailPage" />
+    <ShellContent
+        Title="Mapa"
+        ContentTemplate="{DataTemplate page:MapPage}"
+        Route="MapPage" />
+</FlyoutItem>
