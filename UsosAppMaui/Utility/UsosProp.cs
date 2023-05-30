@@ -17,5 +17,11 @@ namespace UsosAppMaui.Utility
         public const string OAUTH_VERSION = "1.0";
         public const string OAUTH_SIGNATURE_METHOD = "PLAINTEXT";
         public const string SCOPES = "email|grades|photo|studies";
+        public const string BUILDINGS_URL = "https://api.ukw.edu.pl/services/geo/building_index";
+        public const string USER_DATA_URL = "https://api.ukw.edu.pl/services/users/user";
+        public const string COURSES_URL = "https://api.ukw.edu.pl/services/courses/user";
+        public const string GRADE_TERM_URL = "https://api.ukw.edu.pl/services/grades/terms2"; // wymaga term id np 2022L
+        public const string TIMETABLE_URL = "https://api.ukw.edu.pl/services/tt/user"; 
+
     }
 }

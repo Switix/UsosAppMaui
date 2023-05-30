@@ -7,12 +7,20 @@
     Loaded="ContentPage_Loaded"
     Shell.NavBarIsVisible="False">
 
-    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-        <ActivityIndicator
-            HeightRequest="40"
-            HorizontalOptions="Center"
-            IsRunning="True"
-            VerticalOptions="Center"
-            WidthRequest="40" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <Grid VerticalOptions="FillAndExpand">
+            <WebView
+                x:Name="webView"
+                VerticalOptions="FillAndExpand"
+                ZIndex="1000" />
+            <ActivityIndicator
+                x:Name="activityIndicator"
+                HeightRequest="40"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                VerticalOptions="FillAndExpand"
+                WidthRequest="40" />
+        </Grid>
+
+    </ScrollView>
 </ContentPage>

@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks.Sources;
+using UsosAppMaui.Controls;
 using UsosAppMaui.Service;
 using UsosAppMaui.Utility;
 
@@ -17,22 +20,17 @@ public partial class MainPage : ContentPage
        
     }
 
-    private void Listener()
+    private bool Listener()
     {
-        // 1
         HttpListener listener = new HttpListener();
-        // 2
         listener.Prefixes.Add(UsosProp.CALLBACK_URL);
-
-        // 3
         listener.Start();
-        Debug.WriteLine("Listening...");
-
-        //4
+   
         HttpListenerContext context = listener.GetContext();
         HttpListenerRequest request = context.Request;
         string oauth_token="", oauth_verifier="";
         string parameters = request.Url.Query.Remove(0,1);
+        
         string[] split = parameters.Split('&');
         foreach (string s in split)
         {
@@ -44,6 +42,8 @@ public partial class MainPage : ContentPage
         }
         listener.Stop();
         tokenService.getAccessToken(oauth_token,oauth_verifier);
+        return true;
+
     }
 
     public async void Link()
@@ -53,10 +53,21 @@ public partial class MainPage : ContentPage
        
     }
 
-    private void ContentPage_Loaded(object sender, EventArgs e)
+    private async void ContentPage_Loaded(object sender, EventArgs e)
     {
-        Task.Run(() => Listener());
+        webView.Navigating += (s, e) =>
+        {
+            if (e.Url.Contains("callback"))
+            {
+                webView.IsVisible = false;
+            }
+        };      
         Link();
+
+        await Task.Run(() => Listener());
+        AppShell.Current.Items.Add(new FlyoutMenuControl());
+        AppShell.Current.CurrentItem = AppShell.Current.Items.Last();
+
     }
 }
 

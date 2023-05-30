@@ -6,6 +6,9 @@
     Loaded="ContentPage_Loaded"
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" />
+    </Shell.BackButtonBehavior>
 
     <ScrollView>
         <WebView x:Name="webView" />
