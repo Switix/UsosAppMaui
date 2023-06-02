@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UsosAppMaui.Model;
 using UsosAppMaui.Model.Course;
 using UsosAppMaui.Model.Map;
+using UsosAppMaui.Model.TimeTable;
 using UsosAppMaui.Utility;
 
 namespace UsosAppMaui.Service
@@ -32,7 +33,7 @@ namespace UsosAppMaui.Service
         public Dictionary<string, List<Term>> getUserCourses()
         {
 
-            HttpClient httpClient = new HttpClient();
+            using (HttpClient httpClient = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.COURSES_URL))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
@@ -44,21 +45,46 @@ namespace UsosAppMaui.Service
                 request.Content = new FormUrlEncodedContent(data);
 
                 HttpResponseMessage response = httpClient.Send(request);
-                string responseData =  response.Content.ReadAsStringAsync().Result;
+                string responseData = response.Content.ReadAsStringAsync().Result;
 
                 Course course = JsonConvert.DeserializeObject<Course>(responseData);
-                Dictionary<string, List<Term>> terms =new Dictionary<string,List<Term>>();
+                Dictionary<string, List<Term>> terms = new Dictionary<string, List<Term>>();
 
-                foreach(var term in course.course_editions.Terms)
+                foreach (var term in course.course_editions.Terms)
                 {
                     var groups = term.Value.ToObject<List<Term>>();
                     terms.Add(term.Key, groups);
-                }  
+                }
                 return terms;
             }
            
 
             
+        }
+
+        public List<Lesson> getTimeTable(string start ="")
+        {
+            if(start == "")
+            {
+                start = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            
+            using (HttpClient httpClient = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.TIMETABLE_URL))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
+                var data = new Dictionary<string, string>
+                {
+                    {"start",start}
+                };
+                request.Content = new FormUrlEncodedContent(data);
+
+                HttpResponseMessage response = httpClient.Send(request);
+                string responseData = response.Content.ReadAsStringAsync().Result;
+
+                List<Lesson> lessons = JsonConvert.DeserializeObject<List<Lesson>>(responseData);
+                return lessons;
+            }
         }
 
         public  List<Building> getBuildings()
