@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace UsosAppMaui.Dto.User
+namespace UsosAppMaui.Model.Map
 {
-    public class UserDto
+    public class Building
     {
         public string id { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
+        public Name name { get; set; }
+        public Location location { get; set; }
     }
 }

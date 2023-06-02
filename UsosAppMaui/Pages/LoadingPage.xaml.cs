@@ -4,7 +4,7 @@ using UsosAppMaui.Controls;
 using UsosAppMaui.Dto;
 using UsosAppMaui.Service;
 using UsosAppMaui.Utility;
-using UsosAppMaui.Dto.User;
+using UsosAppMaui.Model;
 
 namespace UsosAppMaui.Pages;
 
@@ -48,7 +48,7 @@ public partial class LoadingPage : ContentPage
 
     private bool CheckExpired()
     {
-        UserDto user =  usosService.getUserData().Result;
+        Person user =  usosService.getUserData().Result;
         if (user.id == null) { return false; }
         return true;
     }

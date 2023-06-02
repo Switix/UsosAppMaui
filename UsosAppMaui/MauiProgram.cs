@@ -26,6 +26,8 @@ public static class MauiProgram
 		builder.Services.AddSingleton<WelcomePage>();
 		
 		builder.Services.AddSingleton<LoadingPage>();
+		builder.Services.AddSingleton<GroupsPage>();
+		builder.Services.AddSingleton<MapPage>();
 
 
 
