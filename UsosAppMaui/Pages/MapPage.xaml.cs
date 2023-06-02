@@ -13,6 +13,6 @@ public partial class MapPage : ContentPage
 
     private void ContentPage_Loaded(object sender, EventArgs e)
     {
-        Building result = usosService.getBuildings().Result;
+        var result = usosService.getBuildings();
     }
 }

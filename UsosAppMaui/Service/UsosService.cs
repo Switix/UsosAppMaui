@@ -17,7 +17,7 @@ namespace UsosAppMaui.Service
     {
         public async Task<Person> getUserData()
         {
-            HttpClient httpClient = new HttpClient();
+            using(HttpClient httpClient = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Get, UsosProp.USER_DATA_URL))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
@@ -61,21 +61,16 @@ namespace UsosAppMaui.Service
             
         }
 
-        public async Task<Building> getBuildings()
-        {
-
-            HttpClient httpClient = new HttpClient();
+        public  List<Building> getBuildings()
+        {   
+            using (HttpClient httpClient = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.BUILDINGS_URL))
             {
-                var data = new Dictionary<string, string>
-                {
-
-                };
-                request.Content = new FormUrlEncodedContent(data);
 
                 HttpResponseMessage response = httpClient.Send(request);
-                string responseData = await response.Content.ReadAsStringAsync();
-                return new Building();
+                string responseData =  response.Content.ReadAsStringAsync().Result;
+                List<Building> buildings = JsonConvert.DeserializeObject<List<Building>>(responseData);
+                return buildings;
             }          
         }
         private string getAuthorizationValues()
