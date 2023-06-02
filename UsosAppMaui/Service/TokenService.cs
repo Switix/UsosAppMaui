@@ -18,15 +18,18 @@ namespace UsosAppMaui.Service
         public async Task<string> getRequestToken()
         {
             HttpClient httpClient = new HttpClient();
-            using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.REQUEST_TOKEN_URL))
-            {
-                request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getRequestTokenValues());
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization","OAuth "+getRequestTokenValues());
 
-                HttpResponseMessage response = await httpClient.SendAsync(request);
-                string responseData = await response.Content.ReadAsStringAsync();
-                requestToken = TokenDto.from(responseData);
-                return UsosProp.AUTHORIZATION_URL + "?oauth_token=" + requestToken.oauth_token + "&oauth_token_secret=" + requestToken.oauth_token_secret;
-            }
+            var data = new Dictionary<string, string>
+            {
+                {"scopes", UsosProp.SCOPES}
+            }; 
+
+            HttpResponseMessage response = await httpClient.PostAsync(UsosProp.REQUEST_TOKEN_URL, new FormUrlEncodedContent(data));
+            string responseData = await response.Content.ReadAsStringAsync();
+            requestToken = TokenDto.from(responseData);
+            return UsosProp.AUTHORIZATION_URL + "?oauth_token=" + requestToken.oauth_token + "&oauth_token_secret=" + requestToken.oauth_token_secret;
+            
 
 
         }
@@ -37,6 +40,7 @@ namespace UsosAppMaui.Service
             using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.ACCESS_TOKEN_URL))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAccessTokenValues(oAuthToken,oAuthVerifier));
+                
 
                 HttpResponseMessage response = await httpClient.SendAsync(request);
                 string responseData = await response.Content.ReadAsStringAsync();
@@ -55,8 +59,7 @@ namespace UsosAppMaui.Service
                     "oauth_timestamp=" + DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString() + "," +
                     "oauth_nonce=" + NonceGenerator.generateNonce() + "," +
                     "oauth_version=" + UsosProp.OAUTH_VERSION + "," +
-                    "oauth_callback=" + UsosProp.CALLBACK_URL + "," +
-                    "scopes=" + UsosProp.SCOPES;
+                    "oauth_callback=" + UsosProp.CALLBACK_URL;
         }
         private string getAccessTokenValues(string oAuthToken, string oAuthVerifier)
         {
