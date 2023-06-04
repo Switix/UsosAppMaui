@@ -25,8 +25,5 @@
         Title="UKW poczta"
         ContentTemplate="{DataTemplate page:MailPage}"
         Route="MailPage" />
-    <ShellContent
-        Title="Mapa"
-        ContentTemplate="{DataTemplate page:MapPage}"
-        Route="MapPage" />
+
 </FlyoutItem>

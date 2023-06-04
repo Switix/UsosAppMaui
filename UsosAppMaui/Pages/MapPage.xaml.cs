@@ -14,5 +14,6 @@ public partial class MapPage : ContentPage
     private void ContentPage_Loaded(object sender, EventArgs e)
     {
         var result = usosService.getBuildings();
+
     }
 }
