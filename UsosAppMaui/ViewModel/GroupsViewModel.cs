@@ -26,22 +26,21 @@ namespace UsosAppMaui
             
             foreach(var sem in sems)
             {
-                result.Add(new Semestrs(sem.Key, sem.Value));
-
-                result.Sort((obj1, obj2) =>
-                {
-                    string semId1 = obj1.semId.Substring(0, 4);
-                    string semId2 = obj2.semId.Substring(0, 4);
-                    int semYear1 = int.Parse(semId1);
-                    int semYear2 = int.Parse(semId2);
-
-                    if (semYear1 < semYear2)
-                        return 1;
-                    if (semYear1 > semYear2)
-                        return -1;
-                    return obj1.semId.CompareTo(obj2.semId);
-                });
+                result.Add(new Semestrs(sem.Key, sem.Value));                
             }
+            result.Sort((obj1, obj2) =>
+            {
+                string semId1 = obj1.semId.Substring(0, 4);
+                string semId2 = obj2.semId.Substring(0, 4);
+                int semYear1 = int.Parse(semId1);
+                int semYear2 = int.Parse(semId2);
+
+                if (semYear1 < semYear2)
+                    return 1;
+                if (semYear1 > semYear2)
+                    return -1;
+                return obj1.semId.CompareTo(obj2.semId);
+            });
         }
 
 
