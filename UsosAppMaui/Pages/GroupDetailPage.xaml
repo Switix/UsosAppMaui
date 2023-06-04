@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UsosAppMaui.Pages.GroupDetailPage"
+             Title="GroupDetailPage"
+             xmlns:model="clr-namespace:UsosAppMaui.Model"
+             xmlns:viewmodel="clr-namespace:UsosAppMaui.ViewModel"
+             x:DataType="viewmodel:GroupDetailViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryTextColor">#FFFFFF</Color>
+            <Color x:Key="SecondaryTextColor">#98fb98</Color>
+            <Color x:Key="BackgroundColor">#222222</Color>
+            <Color x:Key="TransparentAccentColor">#007BFF88</Color>
+          
+
+            <Style x:Key="TitleLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource PrimaryTextColor}" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style x:Key="SubtitleLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource SecondaryTextColor}" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+
+            <Style x:Key="GroupLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource PrimaryTextColor}" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+
+            <Style x:Key="ParticipantLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource PrimaryTextColor}" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style x:Key="FrameStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}" />
+                <Setter Property="BorderColor" Value="{StaticResource TransparentAccentColor}" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="Opacity" Value="0.9" />
+              
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Spacing="15" Padding="20">
+            <Frame Style="{StaticResource FrameStyle}">
+                <StackLayout Spacing="5">
+                    <Label Text="Grupa:" Style="{StaticResource TitleLabelStyle}" />
+                    <Label Text="{Binding Groups.group_number}" Style="{StaticResource GroupLabelStyle}" />
+                    <Label Text="{Binding Groups.class_type.pl}" Style="{StaticResource SubtitleLabelStyle}" />
+                </StackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource FrameStyle}">
+                <StackLayout Spacing="10">
+                    <Label Text="Prowadzący:" Style="{StaticResource TitleLabelStyle}" />
+                    <CollectionView ItemsSource="{Binding Groups.lecturers}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Person">
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+                                    <Label Text="{Binding first_name}" Style="{StaticResource ParticipantLabelStyle}" />
+                                    <Label Text="{Binding last_name}" Style="{StaticResource ParticipantLabelStyle}" />
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource FrameStyle}">
+                <StackLayout>
+                    <Label Text="Uczestnicy" Style="{StaticResource TitleLabelStyle}" />
+                    <CollectionView ItemsSource="{Binding Groups.participants}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Person">
+                                <Frame Style="{StaticResource FrameStyle}">
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center" Spacing="5">
+                                        <Label Text="{Binding first_name}" Style="{StaticResource ParticipantLabelStyle}" />
+                                        <Label Text="{Binding last_name}" Style="{StaticResource ParticipantLabelStyle}" />
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+
+
+</ContentPage>

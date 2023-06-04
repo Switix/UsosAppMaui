@@ -6,6 +6,8 @@
     xmlns:page="clr-namespace:UsosAppMaui.Pages"
     FlyoutDisplayOptions="AsMultipleItems">
 
+   
+    
     <ShellContent
         Title="Oceny"
         ContentTemplate="{DataTemplate page:GradesPage}"

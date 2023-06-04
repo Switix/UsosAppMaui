@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using UsosAppMaui.Pages;
 using UsosAppMaui.Service;
+using UsosAppMaui.ViewModel;
 
 namespace UsosAppMaui;
 
@@ -18,23 +19,26 @@ public static class MauiProgram
 			});
 
 
-		builder.Services.AddSingleton<TokenService>();
+        builder.Services.AddTransient<GroupDetailViewModel>();
+        builder.Services.AddSingleton<TokenService>();
 		builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<UsosService>();
 
         builder.Services.AddSingleton<MainPage>();
 		builder.Services.AddSingleton<WelcomePage>();
-		
+
+		builder.Services.AddSingleton<GroupDetailPage>();
 		builder.Services.AddSingleton<LoadingPage>();
 		builder.Services.AddSingleton<GroupsPage>();
 		builder.Services.AddSingleton<MapPage>();
 		builder.Services.AddSingleton<SchedulePage>();
+        builder.Services.AddTransient<GroupsViewModel>();
 
 
 
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
 		return builder.Build();

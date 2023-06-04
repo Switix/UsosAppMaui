@@ -6,7 +6,8 @@
     xmlns:local="clr-namespace:UsosAppMaui"
     xmlns:page="clr-namespace:UsosAppMaui.Pages"
     FlyoutBehavior="Flyout"
-    Shell.TabBarIsVisible="False">
+    Shell.TabBarIsVisible="False"
+    Style="{StaticResource CustomShellStyle}">
 
     <ShellContent
         Title="LoadingPage"
@@ -14,6 +15,13 @@
         FlyoutItemIsVisible="False"
         Route="LoadingPage"
         Shell.FlyoutBehavior="Disabled" />
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="CustomShellStyle" TargetType="Shell">
+                <Setter Property="FlyoutBackgroundColor" Value="#111" />
+            </Style>
+        </ResourceDictionary>
+        </Shell.Resources>
 
 
 </Shell>
