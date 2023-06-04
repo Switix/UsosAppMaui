@@ -25,7 +25,6 @@ public partial class App : Application
     {
         Routing.RegisterRoute(nameof(GroupDetailPage), typeof(GroupDetailPage));
         Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
-        Routing.RegisterRoute(nameof(Pages.MainPage), typeof(Pages.MainPage));
         Routing.RegisterRoute(nameof(SchedulePage), typeof(SchedulePage));
         Routing.RegisterRoute(nameof(GradesPage), typeof(GradesPage));
         Routing.RegisterRoute(nameof(MailPage), typeof(MailPage));

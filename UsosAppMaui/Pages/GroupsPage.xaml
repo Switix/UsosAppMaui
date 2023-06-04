@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UsosAppMaui.Pages.GroupsPage"
-             Title="GroupsPage"
+             Title="Grupy zajęciowe"
              Loaded="ContentPage_Loaded"
              xmlns:viewmodel="clr-namespace:UsosAppMaui"
              x:DataType="viewmodel:GroupsViewModel"

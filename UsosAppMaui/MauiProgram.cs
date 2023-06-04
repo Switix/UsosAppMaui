@@ -26,9 +26,6 @@ public static class MauiProgram
 		builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<UsosService>();
 
-        builder.Services.AddSingleton<MainPage>();
-		builder.Services.AddSingleton<WelcomePage>();
-
 		builder.Services.AddSingleton<GroupDetailPage>();
 		builder.Services.AddSingleton<LoadingPage>();
 		builder.Services.AddSingleton<GroupsPage>();
