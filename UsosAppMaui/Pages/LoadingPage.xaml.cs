@@ -37,8 +37,11 @@ public partial class LoadingPage : ContentPage
             App.AccessToken = accessToken;
             if (CheckExpired())
             {
-                AppShell.Current.Items.Add(new FlyoutMenuControl());
+                App.FlyOutMenu = new FlyoutMenuControl();
+                AppShell.Current.Items.Add(App.FlyOutMenu);
                 AppShell.Current.CurrentItem = AppShell.Current.Items.Last();
+                AppShell.Current.FlyoutFooter = new FlyoutFooterControl(usosService);
+                AppShell.Current.FlyoutHeader = new FlyoutHeaderControl();
                 return;
             }     
         }
@@ -50,6 +53,7 @@ public partial class LoadingPage : ContentPage
     {
         Person user =  usosService.getUserData().Result;
         if (user.id == null) { return false; }
+        App.User = user;
         return true;
     }
 

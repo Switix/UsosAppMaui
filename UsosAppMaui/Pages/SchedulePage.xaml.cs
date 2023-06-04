@@ -1,6 +1,5 @@
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
-using Microsoft.UI.Xaml.Controls;
 using System.Xml;
 using UsosAppMaui.Model.TimeTable;
 using UsosAppMaui.Service;
