@@ -21,7 +21,7 @@
                 <Setter Property="FlyoutBackgroundColor" Value="#111" />
             </Style>
         </ResourceDictionary>
-        </Shell.Resources>
+    </Shell.Resources>
 
 
 </Shell>

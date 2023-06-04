@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,7 +33,9 @@ namespace UsosAppMaui.Utility
         public const string UNITS_URL = "https://api.ukw.edu.pl/services/courses/units";
         public const string UNITS_FIELDS = "course_name|term_id|classtype_id|course_id";
 
-        public const string TIMETABLE_URL = "https://api.ukw.edu.pl/services/tt/user"; 
+        public const string TIMETABLE_URL = "https://api.ukw.edu.pl/services/tt/user";
+
+        public const string REVOKE_TOKEN_URL = "https://api.ukw.edu.pl/services/oauth/revoke_token";
 
     }
 }

@@ -21,6 +21,7 @@ public static class MauiProgram
 
         builder.Services.AddTransient<GradeViewModel>();
         builder.Services.AddTransient<GroupDetailViewModel>();
+        builder.Services.AddTransient<LoadingPage>();
         builder.Services.AddSingleton<TokenService>();
 		builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<UsosService>();

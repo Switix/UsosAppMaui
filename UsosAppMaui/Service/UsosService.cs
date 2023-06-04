@@ -167,33 +167,7 @@ namespace UsosAppMaui.Service
             return result;
         }
 
-        private string getUserTerms()
-        {      
-            using (HttpClient httpClient = new HttpClient())
-            using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.COURSES_URL))
-            {
-                request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
-                var data = new Dictionary<string, string>
-                {
-                    {"fields", "terms[id]"},
-                    {"active_terms_only", UsosProp.COURSES_ACTIVE_TERMS_ONLY },
-                };
-                request.Content = new FormUrlEncodedContent(data);
-
-                HttpResponseMessage response = httpClient.Send(request);
-                string responseData = response.Content.ReadAsStringAsync().Result;
-
-                UserTermHolder userTerms = JsonConvert.DeserializeObject<UserTermHolder>(responseData);
-                string result = "";
-
-                foreach (var userTerm in userTerms.terms)
-                {
-                    result += userTerm.id+"|";
-                }
-                result =result.Remove(result.Length-1);
-                return result;
-            }
-        }
+        
 
         public Dictionary<string, List<Term>> getUserCourses()
         {
@@ -264,6 +238,46 @@ namespace UsosAppMaui.Service
                 List<Building> buildings = JsonConvert.DeserializeObject<List<Building>>(responseData);
                 return buildings;
             }          
+        }
+
+        public void logOut()
+        {
+            using (HttpClient httpClient = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.REVOKE_TOKEN_URL))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
+
+                HttpResponseMessage response = httpClient.Send(request);
+
+            }
+        }
+
+        private string getUserTerms()
+        {
+            using (HttpClient httpClient = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.COURSES_URL))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
+                var data = new Dictionary<string, string>
+                {
+                    {"fields", "terms[id]"},
+                    {"active_terms_only", UsosProp.COURSES_ACTIVE_TERMS_ONLY },
+                };
+                request.Content = new FormUrlEncodedContent(data);
+
+                HttpResponseMessage response = httpClient.Send(request);
+                string responseData = response.Content.ReadAsStringAsync().Result;
+
+                UserTermHolder userTerms = JsonConvert.DeserializeObject<UserTermHolder>(responseData);
+                string result = "";
+
+                foreach (var userTerm in userTerms.terms)
+                {
+                    result += userTerm.id + "|";
+                }
+                result = result.Remove(result.Length - 1);
+                return result;
+            }
         }
         private string getAuthorizationValues()
         {

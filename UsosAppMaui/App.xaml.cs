@@ -1,12 +1,17 @@
-﻿using UsosAppMaui.Dto;
+﻿using UsosAppMaui.Controls;
+using UsosAppMaui.Dto;
+using UsosAppMaui.Model;
 using UsosAppMaui.Pages;
 
 namespace UsosAppMaui;
 
 public partial class App : Application
 {
+    public static Person User { get; set; }
 	public static TokenDto AccessToken {  get; set; }
-	public App(AppShell appShell)
+    public static FlyoutMenuControl FlyOutMenu { get; internal set; }
+
+    public App(AppShell appShell)
 	{
 		InitializeComponent();
 
@@ -19,6 +24,7 @@ public partial class App : Application
     private void RegisterRoutes()
     {
         Routing.RegisterRoute(nameof(GroupDetailPage), typeof(GroupDetailPage));
+        Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
         Routing.RegisterRoute(nameof(Pages.MainPage), typeof(Pages.MainPage));
         Routing.RegisterRoute(nameof(SchedulePage), typeof(SchedulePage));
         Routing.RegisterRoute(nameof(GradesPage), typeof(GradesPage));
