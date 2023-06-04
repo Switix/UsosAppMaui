@@ -61,20 +61,29 @@ public partial class LoadingPage : ContentPage
     {
         webView.Navigating += (s, e) =>
         {
+            getCredentials();
             if (e.Url.Contains("callback"))
             {
                 webView.IsVisible = false;
             }
         };
         Link();
-
+      
         await Task.Run(() => Listener());
+       
         CheckAccessToken();
     }
     public async void Link()
     {
         string link = await tokenService.getRequestToken();
         webView.Source = new Uri(link);
+        webView.Navigated += (s, e) =>
+        {
+            webView.Dispatcher.DispatchAsync(async () =>
+            {
+                getData();
+            });
+        };
 
     }
     private bool Listener()
@@ -101,5 +110,30 @@ public partial class LoadingPage : ContentPage
         tokenService.getAccessToken(oauth_token, oauth_verifier);
         return true;
 
+    }
+
+    public async void getData()
+    {
+        string script = "document.getElementsByName('submit')[0].addEventListener('click', function() {    var login = document.getElementById('username').value;  var password = document.getElementById('password').value;  localStorage.setItem('login', login);   localStorage.setItem('password',password);});";       
+        await webView.EvaluateJavaScriptAsync(script);     
+    }
+
+ 
+
+    public async void getCredentials()
+    {
+        string scriptLogin = "localStorage.getItem('login');";
+        string scriptPassword = "localStorage.getItem('password');";
+        var login = await webView.EvaluateJavaScriptAsync(scriptLogin);
+        var password = await webView.EvaluateJavaScriptAsync(scriptPassword);
+
+        if (login != "null" && password != "null")
+        {
+            User.login = User.prepare(login.ToString());
+            User.password = User.prepare(password.ToString());
+            Preferences.Set(nameof(login), User.login);
+            Preferences.Set(nameof(password), User.password);
+            
+        }
     }
 }

@@ -4,13 +4,17 @@ public partial class MailPage : ContentPage
 {
     public MailPage()
     {
+        User.login = Preferences.Get(nameof(User.login), "");
+        User.password = Preferences.Get(nameof(User.password), "");
         InitializeComponent();
         webView.Navigated += (s, e) =>
         {
-            // Execute JavaScript after the WebView has finished loading
-            string scriptFill = "document.getElementById('rcmloginuser').value = '" + User.login + "'; document.getElementById('rcmloginpwd').value ='" + User.password + "'; document.getElementById('rcmloginsubmit').click();";
+                   
             webView.Dispatcher.DispatchAsync(async () =>
             {
+                
+                string scriptFill = "document.getElementById('rcmloginuser').value = '" + User.login + "'; document.getElementById('rcmloginpwd').value ='" + User.password + "'; document.getElementById('rcmloginsubmit').click();";
+
                 await webView.EvaluateJavaScriptAsync(scriptFill);
             });
         };
