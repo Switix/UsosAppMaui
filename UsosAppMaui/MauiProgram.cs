@@ -33,6 +33,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<MapPage>();
 		builder.Services.AddSingleton<SchedulePage>();
         builder.Services.AddTransient<GroupsViewModel>();
+		builder.Services.AddSingleton<GradesPage>();
 
 
 

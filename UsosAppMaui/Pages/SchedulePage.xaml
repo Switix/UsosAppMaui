@@ -5,10 +5,89 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="SchedulePage"
     Loaded="ContentPage_Loaded">
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
+
+            <HorizontalStackLayout
+                Margin="0,10"
+                HorizontalOptions="Center"
+                Spacing="10">
+                <ImageButton
+                    x:Name="PreviousWeekBtn"
+                    Clicked="PreviousWeekBtn_Clicked"
+                    HeightRequest="10"
+                    Rotation="180"
+                    Source="arrowicon.png"
+                    WidthRequest="10" />
+                <Label
+                    x:Name="Week"
+                    FontSize="21"
+                    VerticalOptions="Center" />
+                <ImageButton
+                    x:Name="NextWeekBtn"
+                    Clicked="NextWeekBtn_Clicked"
+                    HeightRequest="1"
+                    Source="arrowicon.png"
+                    WidthRequest="10" />
+            </HorizontalStackLayout>
+
+            <Grid RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="1"
+                    FontSize="21"
+                    HorizontalOptions="Center"
+                    Text="Poniedziałek"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Column="2"
+                    FontSize="21"
+                    HorizontalOptions="Center"
+                    Text="Wtorek"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Column="3"
+                    FontSize="21"
+                    HorizontalOptions="Center"
+                    Text="Środa"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Column="4"
+                    FontSize="21"
+                    HorizontalOptions="Center"
+                    Text="Czwartek"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Column="5"
+                    FontSize="21"
+                    HorizontalOptions="Center"
+                    Text="Piątek"
+                    VerticalOptions="Center" />
+            </Grid>
+
+            <Grid
+                x:Name="TimeTable"
+                ColumnSpacing="10"
+                RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>
