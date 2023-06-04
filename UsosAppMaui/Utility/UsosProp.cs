@@ -26,8 +26,12 @@ namespace UsosAppMaui.Utility
         public const string COURSES_FIELDS = "course_editions[user_groups[group_number|class_type|course_id|course_name|lecturers|participants]]";
         public const string COURSES_ACTIVE_TERMS_ONLY = "false";
 
-        public const string GRADE_TERM_URL = "https://api.ukw.edu.pl/services/grades/terms2";// wymaga term id np 2022L
-        
+        public const string GRADE_TERM_URL = "https://api.ukw.edu.pl/services/grades/terms";// wymaga term id np 2022L
+        public const string GRADE_FIELDS = "value_symbol";
+
+        public const string UNITS_URL = "https://api.ukw.edu.pl/services/courses/units";
+        public const string UNITS_FIELDS = "course_name|term_id|classtype_id|course_id";
+
         public const string TIMETABLE_URL = "https://api.ukw.edu.pl/services/tt/user"; 
 
     }

@@ -8,8 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UsosAppMaui.Model;
 using UsosAppMaui.Model.Course;
+using UsosAppMaui.Model.Grade;
 using UsosAppMaui.Model.Map;
 using UsosAppMaui.Model.TimeTable;
+using UsosAppMaui.Model.Unit;
 using UsosAppMaui.Utility;
 
 namespace UsosAppMaui.Service
@@ -27,6 +29,169 @@ namespace UsosAppMaui.Service
                 string responseData = await response.Content.ReadAsStringAsync();
                 Person user = JsonConvert.DeserializeObject<Person>(responseData);
                 return user;
+            }
+        }
+
+        public List<Unit> getUserGrades()
+        {
+            using (HttpClient httpClient = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.GRADE_TERM_URL))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
+                var data = new Dictionary<string, string>
+                {
+                    {"term_ids",getUserTerms() },
+                    {"fields", UsosProp.GRADE_FIELDS},
+                    {"active_terms_only", UsosProp.COURSES_ACTIVE_TERMS_ONLY },
+                };
+                request.Content = new FormUrlEncodedContent(data);
+
+                HttpResponseMessage response = httpClient.Send(request);
+                string responseData = response.Content.ReadAsStringAsync().Result;
+
+                GradeRoot gradeRoot = JsonConvert.DeserializeObject<GradeRoot>(responseData);
+
+                // unit, ocena
+                Dictionary<string, string> unit_grade = new Dictionary<string, string>();
+
+                List<GradeCourse> courses = new List<GradeCourse>();
+                List<CourseUnitsGrades> courseUnitsGrades = new List<CourseUnitsGrades>();  
+                List<GradeAttempt> gradeAttempts = new List<GradeAttempt>();
+                List<Grade> grades = new List<Grade>();
+                List<GradeValue> gradeValues = new List<GradeValue>();
+
+                foreach (var term in gradeRoot.Terms)
+                {
+                    GradeCourse course = JsonConvert.DeserializeObject<GradeCourse>(term.Value.ToString());
+                    courses.Add(course);
+                }
+                foreach (var course in courses)
+                {
+                    foreach (var c in course.course_units_grades)
+                    {
+                        CourseUnitsGrades courseUnitsGrade = JsonConvert.DeserializeObject<CourseUnitsGrades>(c.Value.ToString());
+                        courseUnitsGrades.Add(courseUnitsGrade);
+                    }
+                }
+                foreach (var courseUnitGrade in courseUnitsGrades)
+                {
+                    foreach (var cug in courseUnitGrade.CourseUnitGrade)
+                    {
+                        if(cug.Key == "course_grades")
+                        {
+                            continue;
+                        }
+
+                        GradeAttempt gradeAttempt = JsonConvert.DeserializeObject<GradeAttempt>(cug.Value.ToString());
+                        gradeAttempts.Add(gradeAttempt);
+                    }
+                }
+                List<string> units = new List<string>();
+                foreach (var gradeAttempt in gradeAttempts)
+                {
+                    foreach (var ga in gradeAttempt.GradeAttempts)
+                    {
+                        units.Add(ga.Key.ToString());
+                        Grade gr = JsonConvert.DeserializeObject<Grade>(ga.Value.ToString());
+                        grades.Add(gr);
+                    }
+                }
+                foreach (var grade in grades)
+                {
+                    GradeValue gradeValue = new GradeValue();
+                    foreach (var g in grade.Grades)
+                    {
+                        if(g.Value.ToString() == "")
+                        {
+                            break;
+                        }
+                        gradeValue = JsonConvert.DeserializeObject<GradeValue>(g.Value.ToString());                     
+                    }
+                    gradeValues.Add(gradeValue);
+                }
+                for(int i=0; i<units.Count; i++)
+                {
+                    if(gradeValues[i].gradeValues is null)
+                    {
+                        unit_grade.Add(units[i],"-");
+                        continue;
+                    }
+                    foreach(var g in gradeValues[i].gradeValues) 
+                    {
+                        unit_grade.Add(units[i],g.Value.ToString());
+                    }   
+                }
+               return getUnitInfo(unit_grade);
+            }
+        }
+
+        private List<Unit> getUnitInfo(Dictionary<string, string> unit_grade)
+        {
+            List<Unit> result = new List<Unit>();
+            string unitsString = "";
+            foreach (var unit in unit_grade.Keys)
+            {
+                unitsString += unit + "|";
+            }
+           unitsString = unitsString.Remove(unitsString.Length - 1);
+
+            using (HttpClient httpClient = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.UNITS_URL))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
+                var data = new Dictionary<string, string>
+                {
+                    {"unit_ids",unitsString},
+                    {"fields", UsosProp.UNITS_FIELDS},
+                };
+                request.Content = new FormUrlEncodedContent(data);
+
+                HttpResponseMessage response = httpClient.Send(request);
+                string responseData = response.Content.ReadAsStringAsync().Result;
+
+                Dictionary<string, UnitDto> units_info = JsonConvert.DeserializeObject<Dictionary<string, UnitDto>>(responseData);
+                
+                foreach (var unit in units_info)
+                {
+                    Unit u = new Unit
+                    {
+                        classtype_id = unit.Value.classtype_id,
+                        course_id = unit.Value.course_id,
+                        course_name = unit.Value.course_name,
+                        term_id = unit.Value.term_id,
+                        grade_value = unit_grade[unit.Key]
+                    };
+                    result.Add(u);
+                }
+            }
+            return result;
+        }
+
+        private string getUserTerms()
+        {      
+            using (HttpClient httpClient = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Post, UsosProp.COURSES_URL))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", getAuthorizationValues());
+                var data = new Dictionary<string, string>
+                {
+                    {"fields", "terms[id]"},
+                    {"active_terms_only", UsosProp.COURSES_ACTIVE_TERMS_ONLY },
+                };
+                request.Content = new FormUrlEncodedContent(data);
+
+                HttpResponseMessage response = httpClient.Send(request);
+                string responseData = response.Content.ReadAsStringAsync().Result;
+
+                UserTermHolder userTerms = JsonConvert.DeserializeObject<UserTermHolder>(responseData);
+                string result = "";
+
+                foreach (var userTerm in userTerms.terms)
+                {
+                    result += userTerm.id+"|";
+                }
+                result =result.Remove(result.Length-1);
+                return result;
             }
         }
 
@@ -87,6 +252,7 @@ namespace UsosAppMaui.Service
             }
         }
 
+        
         public  List<Building> getBuildings()
         {   
             using (HttpClient httpClient = new HttpClient())

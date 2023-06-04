@@ -108,11 +108,8 @@ public partial class SchedulePage : ContentPage
                         TextColor= Color.Parse("#98fb98"),
                     }
                 }
-                
-                
-               
+ 
             };
-
 
             TimeTable.SetRowSpan(border, size);
             TimeTable.SetColumn(border, column);
